@@ -16,7 +16,7 @@ int main ()
 {
 // Create a socket
 int listening_socket = socket(AF_INET, SOCK_STREAM, 0);
-if (listening_socket == -1)
+if (listening_socket < 0)
 {
     std::cerr << "Please connect a socket!" << std::endl;
     return Error
@@ -29,12 +29,17 @@ new_socket_address.sin_port = htons(52000);
 // convert an ip address string to a number using this function
 inet_pton(AF_INET, "0.0.0.0", &new_socket_address.sin_addr);
 
-if (bind(listening_socket, (sockaddr*)&new_socket_address, sizeof(new_socket_address)) == -1)
+if (bind(listening_socket, (sockaddr*)&new_socket_address, sizeof(new_socket_address)) < 0)
 {
     std::cerr << "sorry it can't bind to the IP/port" << std::endl;
     return Error
 }
-// Select the socket for listening
+// Check the socket for listening
+if (listen(listening_socket, SOMAXCONN)  < 0)
+{
+    std::cerr << "Failed to listen to that port!" << std::endl;
+    return Error
+}
 // Accept calls
 // Close the selected listening Port
 // Close socket
