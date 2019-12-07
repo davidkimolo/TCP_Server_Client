@@ -47,8 +47,31 @@ char new_host[NI_MAXHOST];
 char new_service[NI_MAXSERV];
 
 // accept connections 
+int clientSocket = accept(listening_socket, (sockaddr*)&new_client, &new_clientSize);
+if (clientSocket < 0)
+{
+    std::cerr << "There was a problem reaching client" << std::endl;
+    return Error
+}
 
 // Close the selected listening Port
+close(listening_socket);
+// cleaning the data
+memset(new_host, 0,  NI_MAXHOST);
+memset(new_service, 0, NI_MAXSERV);
+int server_name = getnameinfo((sockaddr*)&new_client, sizeof(new_client), new_host, NI_MAXHOST, new_service, NI_MAXSERV, 0);
+
+if (server_name)
+{
+    std::cout << "This" << new_host << " is connected to " << new_service << std::endl;
+}
+else
+{
+    inet_ntop(AF_INET, &new_client.sin_addr, new_host, NI_MAXHOST);
+    std::cout << "This" << new_host << " is connected to " << ntohs(new_client.sin_port) << std::endl;
+}
+
+
 // Close socket
 
     return 0;
