@@ -41,6 +41,13 @@ if (listen(listening_socket, SOMAXCONN)  < 0)
     return Error
 }
 // Accept calls
+sockaddr_in new_client;
+socklen_t new_clientSize = sizeof(new_client);
+char new_host[NI_MAXHOST];
+char new_service[NI_MAXSERV];
+
+// accept connections 
+
 // Close the selected listening Port
 // Close socket
 
