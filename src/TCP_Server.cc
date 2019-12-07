@@ -25,7 +25,7 @@ if (listening_socket < 0)
 sockaddr_in new_socket_address;
 new_socket_address.sin_family = AF_INET;
 // convert port to machine correct byte (either little endian or big endian)
-new_socket_address.sin_port = htons(52000);
+new_socket_address.sin_port = htons(50000);
 // convert an ip address string to a number using this function
 inet_pton(AF_INET, "0.0.0.0", &new_socket_address.sin_addr);
 
@@ -68,7 +68,7 @@ if (server_name)
 else
 {
     inet_ntop(AF_INET, &new_client.sin_addr, new_host, NI_MAXHOST);
-    std::cout << "This" << new_host << " is connected to " << ntohs(new_client.sin_port) << std::endl;
+    std::cout << "This client " << new_host << " is connected to " << ntohs(new_client.sin_port) << std::endl;
 }
 
 // show message
@@ -77,7 +77,7 @@ while (true)
 {
     memset(buffer, 0, 4096);
 
-    int received_bytes = recv(clientSocket, buffer, 0, 4096);
+    int received_bytes = recv(clientSocket, buffer, 4096, 0);
     if (received_bytes < 0)
     {
         std::cerr << "There is a problem while connecting" << std::endl;
@@ -87,10 +87,12 @@ while (true)
     if (received_bytes == 0)
     {
         std::cout << "Hello, there. The client has disconnected" << std::endl;
+        break;
     }
 
     std::cout << "The client has received: " << std::string(buffer, 0, received_bytes) << std::endl;
-    send(clientSocket, buffer, received_bytes+1, 0);
+    int return_message = send(clientSocket, buffer, received_bytes+1, 0);
+   // std::cout <<"You had send: " << "*** " << return_message << " ***" << std::endl;
 }
 
 // Close socket
