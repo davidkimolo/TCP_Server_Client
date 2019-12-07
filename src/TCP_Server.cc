@@ -71,8 +71,29 @@ else
     std::cout << "This" << new_host << " is connected to " << ntohs(new_client.sin_port) << std::endl;
 }
 
+// show message
+char buffer[4096];
+while (true)
+{
+    memset(buffer, 0, 4096);
+
+    int received_bytes = recv(clientSocket, buffer, 0, 4096);
+    if (received_bytes < 0)
+    {
+        std::cerr << "There is a problem while connecting" << std::endl;
+        return Error
+        break;
+    }
+    if (received_bytes == 0)
+    {
+        std::cout << "Hello, there. The client has disconnected" << std::endl;
+    }
+
+    std::cout << "The client has received: " << std::string(buffer, 0, received_bytes) << std::endl;
+    send(clientSocket, buffer, received_bytes+1, 0);
+}
 
 // Close socket
-
+close(clientSocket);
     return 0;
 }
