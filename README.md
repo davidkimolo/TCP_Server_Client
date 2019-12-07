@@ -1,6 +1,7 @@
 # TCP_Server_Client
 This is a TCP server created for unix machines
-
+## Screenshot
+![](server_screenshot.png)
 ## Objectives
 - Create a **socket**
 - The socket will be **binded** to an IP/Port
